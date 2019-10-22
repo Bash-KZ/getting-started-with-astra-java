@@ -14,16 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.datastax.apollo.entity.SpacecraftJourneyCatalog;
@@ -40,11 +33,12 @@ import io.swagger.annotations.ApiResponses;
 /**
  * REST Controller for operations on spacecrafts catalog.O
  */
+@CrossOrigin
 @RestController
 @Api(
- value = "/api/spacecrafts", 
+ value = "/api/spacecraft",
  description = "Operations on spacecrafts catalog")
-@RequestMapping("/api/spacecrafts")
+@RequestMapping("/api/spacecraft")
 public class SpacecraftController {
     
     /** Logger for the class. */
@@ -156,7 +150,7 @@ public class SpacecraftController {
     /**
      * Create a new Journey for a Spacecraft
      */
-    @PostMapping(value = "/{spacecraftName}", consumes = TEXT_PLAIN_VALUE, produces = TEXT_PLAIN_VALUE)
+    @PostMapping(value = "/{spacecraftName}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = TEXT_PLAIN_VALUE)
     @ApiOperation(value = " Create a new Journey for a Spacecraft", response = String.class)
     @ApiResponses({
             @ApiResponse(code = 201, message = "Journey has been created"),

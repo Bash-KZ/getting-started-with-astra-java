@@ -183,6 +183,67 @@ public class ApolloService {
         return new PagedResultWrapper<SpacecraftTemperatureOverTime>(daoResult, 
                 pageSize.isPresent() ? pageSize.get() : 0);
     }
+
+    /**
+     * Create a new {@link SpacecraftTemperatureOverTime} for each item in the array.
+     *
+     * @param readings
+     *       An array unique temperature readings
+     * @return
+     *       true if successful
+     */
+    public boolean insertTemperatureReading(SpacecraftTemperatureOverTime[] readings) {
+        for (int i=0; i< readings.length; i++) {
+            getSpaceCraftInstrumentsDao().upsertTemperature(readings[i]);
+        }
+        return true;
+    }
+
+    /**
+     * Create a new {@link SpacecraftLocationOverTime} for each item in the array.
+     *
+     * @param readings
+     *       An array unique location readings
+     * @return
+     *       true if successful
+     */
+    public boolean insertLocationReading(SpacecraftLocationOverTime[] readings) {
+        for (int i=0; i< readings.length; i++) {
+            getSpaceCraftInstrumentsDao().upsertLocation(readings[i]);
+        }
+        return true;
+    }
+
+    /**
+     * Create a new {@link SpacecraftPressureOverTime} for each item in the array.
+     *
+     * @param readings
+     *       An array unique pressure readings
+     * @return
+     *       true if successful
+     */
+    public boolean insertPressureReading(SpacecraftPressureOverTime[] readings) {
+        for (int i=0; i< readings.length; i++) {
+            getSpaceCraftInstrumentsDao().upsertPressure(readings[i]);
+        }
+        return true;
+    }
+
+    /**
+     * Create a new {@link SpacecraftSpeedOverTime} for each item in the array.
+     *
+     * @param readings
+     *       An array unique pressure readings
+     * @return
+     *       true if successful
+     */
+    public boolean insertSpeedReading(SpacecraftSpeedOverTime[] readings) {
+        for (int i=0; i< readings.length; i++) {
+            getSpaceCraftInstrumentsDao().upsertSpeed(readings[i]);
+        }
+        return true;
+    }
+
     
     /**
      * Retrieve pressure readings for a journey.

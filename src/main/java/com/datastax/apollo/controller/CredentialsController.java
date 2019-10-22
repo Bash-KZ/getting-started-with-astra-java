@@ -11,13 +11,9 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.datastax.apollo.dao.SessionManager;
@@ -29,7 +25,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-
+@CrossOrigin
 @RestController
 @Api(
    value = "/api/credentials", 
@@ -85,7 +81,7 @@ public class CredentialsController {
     @ApiImplicitParams({
         @ApiImplicitParam(
             name = "file",
-            value = "A binary zip file provided by apollo to initiate a 2-zays SSL connection",
+            value = "A binary zip file provided by apollo to initiate a 2-ways SSL connection",
             required = true, dataType = "file", paramType = "form")
     })
     public ResponseEntity<String> saveCredentials(
@@ -99,7 +95,7 @@ public class CredentialsController {
         @ApiParam(name="keyspace", value="keyspace to use", required=true)
         String keyspace,
         @RequestParam("file") MultipartFile file) throws IOException {
-           LOGGER.info("Initiatilizing credentials and connection");
+           LOGGER.info("Initializing credentials and connection");
            LOGGER.info("+ Zip File found with {} bytes", file.getSize());
            
            // Save File Locally in temp folder with generated UID
@@ -118,7 +114,7 @@ public class CredentialsController {
     /**
      * Check if system is initialized and connected.
      */
-     @RequestMapping(method = GET, value = "/")
+     @RequestMapping(method = GET)
      @ApiOperation(value = "Status for component", response = String.class)
      @ApiResponses({
          @ApiResponse(code = 200, message = "System is connected"),
@@ -130,12 +126,12 @@ public class CredentialsController {
          return ResponseEntity.ok("Connection Successful");
      }
      
-     @PostMapping("/test")
+     @PostMapping(value = "/test", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
      public ResponseEntity<String> testCredentials(
              @RequestParam("username") String username,
              @RequestParam("password") String password,
              @RequestParam("keyspace") String keyspace,
-             @RequestParam("file")     MultipartFile file) throws IOException {
+             @RequestParam("file") MultipartFile file) throws IOException {
          
          File tempFile = File.createTempFile(UUID.randomUUID().toString(), ".zip");
          Files.copy(file.getInputStream(), tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);

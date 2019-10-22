@@ -19,7 +19,7 @@
 	</parent>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>8</java.version>
 		<java-driver.version>4.2.0-cloud-01</java-driver.version>
 		<swagger.version>2.9.2</swagger.version>
 		<version.maven.plugin.compiler>3.8.1</version.maven.plugin.compiler>
@@ -121,7 +121,6 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>${version.maven.plugin.compiler}</version>
 					<configuration>
-						<release>${java.version}</release>
 						<annotationProcessorPaths>
 							<path>
 								<groupId>com.datastax.oss</groupId>
