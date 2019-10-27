@@ -11,6 +11,7 @@ import com.datastax.apollo.entity.SpacecraftTemperatureOverTime;
 import com.datastax.oss.driver.api.core.PagingIterable;
 import com.datastax.oss.driver.api.core.cql.BoundStatementBuilder;
 import com.datastax.oss.driver.api.mapper.annotations.Dao;
+import com.datastax.oss.driver.api.mapper.annotations.Insert;
 import com.datastax.oss.driver.api.mapper.annotations.QueryProvider;
 import com.datastax.oss.driver.api.mapper.annotations.Select;
 
@@ -37,7 +38,51 @@ public interface SpacecraftInstrumentsDao {
                          SpacecraftLocationOverTime.class, SpacecraftSpeedOverTime.class})
     PagingIterable<SpacecraftTemperatureOverTime> getTemperatureReading(
             String spacecraftName, UUID JourneyId, Optional<Integer> pageSize, Optional<String> pagingState);
-    
+
+    /**
+     * Upsert a temperature reading.
+     *
+     * @param reading
+     *      The temperature reading
+     * @return
+     *      if statement was applied
+     */
+    @Insert
+    boolean upsertTemperature(SpacecraftTemperatureOverTime reading);
+
+    /**
+     * Upsert a location reading.
+     *
+     * @param reading
+     *      The location reading
+     * @return
+     *      if statement was applied
+     */
+    @Insert
+    boolean upsertLocation(SpacecraftLocationOverTime reading);
+
+    /**
+     * Upsert a pressure reading.
+     *
+     * @param reading
+     *      The pressure reading
+     * @return
+     *      if statement was applied
+     */
+    @Insert
+    boolean upsertPressure(SpacecraftPressureOverTime reading);
+
+    /**
+     * Upsert a speed reading.
+     *
+     * @param reading
+     *      The speed reading
+     * @return
+     *      if statement was applied
+     */
+    @Insert
+    boolean upsertSpeed(SpacecraftSpeedOverTime reading);
+
     /**
      * Search for pressure readings.
      */

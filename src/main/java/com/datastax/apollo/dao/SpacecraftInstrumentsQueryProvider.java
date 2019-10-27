@@ -132,7 +132,7 @@ public class SpacecraftInstrumentsQueryProvider {
         // (1) - Bind the prepared statement with parameters 
         BoundStatement bsTemperature = psSelectTemperatureReading.bind()
                 .setUuid(COLUMN_JOURNEY_ID, journeyId)
-                .setString(spacecraftName, spacecraftName);
+                .setString(COLUMN_SPACECRAFT_NAME, spacecraftName);
 
         // (2) - Update the bound statement to add paging metadata (pageSize, pageState)
         bsTemperature = paging(bsTemperature, pageSize, pagingState);
@@ -151,7 +151,7 @@ public class SpacecraftInstrumentsQueryProvider {
             String spacecraftName, UUID journeyId, Optional<Integer> pageSize, Optional<String>  pagingState) {
        return cqlSession.execute(paging(psSelectPressureReading.bind()
                        .setUuid(COLUMN_JOURNEY_ID, journeyId)
-                       .setString(spacecraftName, spacecraftName), pageSize, pagingState))
+                       .setString(COLUMN_SPACECRAFT_NAME, spacecraftName), pageSize, pagingState))
                .map(ehPressure::get);
     }
     
@@ -162,7 +162,7 @@ public class SpacecraftInstrumentsQueryProvider {
             String spacecraftName, UUID journeyId, Optional<Integer> pageSize, Optional<String>  pagingState) {
        return cqlSession.execute(paging(psSelectLocationReading.bind()
                        .setUuid(COLUMN_JOURNEY_ID, journeyId)
-                       .setString(spacecraftName, spacecraftName), pageSize, pagingState))
+                       .setString(COLUMN_SPACECRAFT_NAME, spacecraftName), pageSize, pagingState))
                .map(ehLocation::get);
     }
     
@@ -173,7 +173,7 @@ public class SpacecraftInstrumentsQueryProvider {
             String spacecraftName, UUID journeyId, Optional<Integer> pageSize, Optional<String>  pagingState) {
        return cqlSession.execute(paging(psSelectSpeedReading.bind()
                        .setUuid(COLUMN_JOURNEY_ID, journeyId)
-                       .setString(spacecraftName, spacecraftName), pageSize, pagingState))
+                       .setString(COLUMN_SPACECRAFT_NAME, spacecraftName), pageSize, pagingState))
                .map(ehSpeed::get);
     }
     

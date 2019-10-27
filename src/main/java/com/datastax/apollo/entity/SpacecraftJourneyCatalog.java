@@ -13,6 +13,7 @@ import com.datastax.oss.driver.api.mapper.annotations.CqlName;
 import com.datastax.oss.driver.api.mapper.annotations.Entity;
 import com.datastax.oss.driver.api.mapper.annotations.PartitionKey;
 import com.datastax.oss.driver.api.querybuilder.SchemaBuilder;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 /**
@@ -36,10 +37,12 @@ public class SpacecraftJourneyCatalog implements Serializable {
     
     @PartitionKey
     @CqlName(COLUMN_SPACECRAFT_NAME)
+    @JsonProperty(COLUMN_SPACECRAFT_NAME)
     private String name;
     
     @ClusteringColumn
     @CqlName(COLUMN_ID)
+    @JsonProperty(COLUMN_ID)
     private UUID journeyId;
     
     @CqlName(COLUMN_START)
