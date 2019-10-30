@@ -1,19 +1,22 @@
 package com.datastax.apollo.controller;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.datastax.apollo.entity.SpacecraftLocationOverTime;
 import com.datastax.apollo.entity.SpacecraftPressureOverTime;
@@ -21,9 +24,11 @@ import com.datastax.apollo.entity.SpacecraftSpeedOverTime;
 import com.datastax.apollo.entity.SpacecraftTemperatureOverTime;
 import com.datastax.apollo.model.PagedResultWrapper;
 import com.datastax.apollo.service.ApolloService;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
 
 @CrossOrigin
 @RestController
@@ -64,13 +69,13 @@ public class InstrumentsController {
             @RequestParam("pagesize") Optional<Integer> pageSize,
             @ApiParam(name="pagestate", value="Use to retrieve next pages", required=false )
             @RequestParam("pagestate") Optional<String> pageState) {
-        LOGGER.info("Retrieving temperature readings for spacecraft {} and journey {}", spacecraftName, journeyId);
+        LOGGER.debug("Retrieving temperature readings for spacecraft {} and journey {}", spacecraftName, journeyId);
         PagedResultWrapper<SpacecraftTemperatureOverTime> res = apolloService.getTemperatureReading(spacecraftName, journeyId, pageSize, pageState);
         return ResponseEntity.ok(res);
     }
     
     /**
-     * Retrieve temperature metrics
+     * Retrieve pressure metrics
      */
     @GetMapping(value="/pressure", produces = APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Retrieve pressure reading for a journey", response = List.class)
@@ -84,7 +89,7 @@ public class InstrumentsController {
             @RequestParam("pagesize") Optional<Integer> pageSize,
             @ApiParam(name="pagestate", value="Use to retrieve next pages", required=false )
             @RequestParam("pagestate") Optional<String> pageState) {
-        LOGGER.info("Retrieving pressure readings for spacecraft {} and journey {}", spacecraftName, journeyId);
+        LOGGER.debug("Retrieving pressure readings for spacecraft {} and journey {}", spacecraftName, journeyId);
         return ResponseEntity.ok(apolloService.getPressureReading(spacecraftName, journeyId, pageSize, pageState));
     } 
     
@@ -103,7 +108,7 @@ public class InstrumentsController {
             @RequestParam("pagesize") Optional<Integer> pageSize,
             @ApiParam(name="pagestate", value="Use to retrieve next pages", required=false )
             @RequestParam("pagestate") Optional<String> pageState) {
-        LOGGER.info("Retrieving pressure readings for spacecraft {} and journey {}", spacecraftName, journeyId);
+        LOGGER.debug("Retrieving pressure readings for spacecraft {} and journey {}", spacecraftName, journeyId);
         return ResponseEntity.ok(apolloService.getSpeedReading(spacecraftName, journeyId, pageSize, pageState));
     } 
     
@@ -122,10 +127,9 @@ public class InstrumentsController {
             @RequestParam("pagesize") Optional<Integer> pageSize,
             @ApiParam(name="pagestate", value="Use to retrieve next pages", required=false )
             @RequestParam("pagestate") Optional<String> pageState) {
-        LOGGER.info("Retrieving pressure readings for spacecraft {} and journey {}", spacecraftName, journeyId);
+        LOGGER.debug("Retrieving pressure readings for spacecraft {} and journey {}", spacecraftName, journeyId);
         return ResponseEntity.ok(apolloService.getLocationReading(spacecraftName, journeyId, pageSize, pageState));
     }
-
 
     @PostMapping(value="/temperature", consumes = APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Save temperature reading for a journey", response = List.class)
@@ -135,16 +139,12 @@ public class InstrumentsController {
             @PathVariable(value = "spacecraftName") String spacecraftName,
             @ApiParam(name="journeyId", value="Identifier for journey",example = "abb7c000-c310-11ac-8080-808080808080",required=true )
             @PathVariable(value = "journeyId") UUID journeyId,
-            @RequestBody SpacecraftTemperatureOverTime[] readings)
-    {
-        LOGGER.info("Saving temperature readings for spacecraft {} and journey {}", spacecraftName, journeyId);
-        boolean res =  apolloService.insertTemperatureReading(readings);
-
-        if (res) {
-            return ResponseEntity.ok("OK");
-        } else {
-            return ResponseEntity.badRequest().build();
+            @RequestBody SpacecraftTemperatureOverTime[] readings) {
+        LOGGER.debug("Saving temperature readings for spacecraft {} and journey {}", spacecraftName, journeyId);
+        if (null != readings && readings.length > 0) {
+            apolloService.insertTemperatureReading(readings);
         }
+        return ResponseEntity.ok("OK");
     }
 
     @PostMapping(value="/location", consumes = APPLICATION_JSON_VALUE)
@@ -155,16 +155,12 @@ public class InstrumentsController {
             @PathVariable(value = "spacecraftName") String spacecraftName,
             @ApiParam(name="journeyId", value="Identifier for journey",example = "abb7c000-c310-11ac-8080-808080808080",required=true )
             @PathVariable(value = "journeyId") UUID journeyId,
-            @RequestBody SpacecraftLocationOverTime[] readings)
-    {
-        LOGGER.info("Saving location readings for spacecraft {} and journey {}", spacecraftName, journeyId);
-        boolean res =  apolloService.insertLocationReading(readings);
-
-        if (res) {
-            return ResponseEntity.ok("OK");
-        } else {
-            return ResponseEntity.badRequest().build();
+            @RequestBody SpacecraftLocationOverTime[] readings) {
+        LOGGER.debug("Saving location reading(s) for spacecraft {} and journey {}", spacecraftName, journeyId);
+        if (null != readings && readings.length > 0) {
+            apolloService.insertLocationReading(readings);
         }
+        return ResponseEntity.ok("OK");
     }
 
     @PostMapping(value="/pressure", consumes = APPLICATION_JSON_VALUE)
@@ -175,16 +171,12 @@ public class InstrumentsController {
             @PathVariable(value = "spacecraftName") String spacecraftName,
             @ApiParam(name="journeyId", value="Identifier for journey",example = "abb7c000-c310-11ac-8080-808080808080",required=true )
             @PathVariable(value = "journeyId") UUID journeyId,
-            @RequestBody SpacecraftPressureOverTime[] readings)
-    {
-        LOGGER.info("Saving pressure readings for spacecraft {} and journey {}", spacecraftName, journeyId);
-        boolean res =  apolloService.insertPressureReading(readings);
-
-        if (res) {
-            return ResponseEntity.ok("OK");
-        } else {
-            return ResponseEntity.badRequest().build();
+            @RequestBody SpacecraftPressureOverTime[] readings) {
+        LOGGER.debug("Saving pressure readings for spacecraft {} and journey {}", spacecraftName, journeyId);
+        if (null != readings && readings.length > 0) {
+            apolloService.insertPressureReading(readings);
         }
+        return ResponseEntity.ok("OK");
     }
 
     @PostMapping(value="/speed", consumes = APPLICATION_JSON_VALUE)
@@ -195,16 +187,12 @@ public class InstrumentsController {
             @PathVariable(value = "spacecraftName") String spacecraftName,
             @ApiParam(name="journeyId", value="Identifier for journey",example = "abb7c000-c310-11ac-8080-808080808080",required=true )
             @PathVariable(value = "journeyId") UUID journeyId,
-            @RequestBody SpacecraftSpeedOverTime[] readings)
-    {
-        LOGGER.info("Saving speed readings for spacecraft {} and journey {}", spacecraftName, journeyId);
-        boolean res =  apolloService.insertSpeedReading(readings);
-
-        if (res) {
-            return ResponseEntity.ok("OK");
-        } else {
-            return ResponseEntity.badRequest().build();
+            @RequestBody SpacecraftSpeedOverTime[] readings) {
+        LOGGER.debug("Saving speed readings for spacecraft {} and journey {}", spacecraftName, journeyId);
+        if (null != readings && readings.length > 0) {
+            apolloService.insertSpeedReading(readings);
         }
+        return ResponseEntity.ok("OK");
     }
 
 }

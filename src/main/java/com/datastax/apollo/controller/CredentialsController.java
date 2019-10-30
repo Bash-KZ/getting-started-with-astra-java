@@ -10,10 +10,13 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.datastax.apollo.dao.SessionManager;
@@ -35,24 +38,6 @@ public class CredentialsController {
     
     /** Logger for the class. */
     private static final Logger LOGGER = LoggerFactory.getLogger(CredentialsController.class);
-   
-    @ExceptionHandler(value = IllegalArgumentException.class)
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public String _errorBadRequestHandler(IllegalArgumentException ex) {
-        return ex.getMessage();
-    }
-    
-    @ExceptionHandler(value = IllegalStateException.class)
-    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
-    public String _errorUnAuthorizedHandler(IllegalArgumentException ex) {
-        return ex.getMessage();
-    }
-    
-    @ExceptionHandler(value = IOException.class)
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    public String _errorBadCannotWriteFile(IllegalArgumentException ex) {
-        return ex.getMessage();
-    }
     
     /**
      * POST on /api/credentials

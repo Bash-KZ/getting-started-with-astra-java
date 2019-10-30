@@ -6,8 +6,10 @@ import static com.datastax.oss.driver.api.querybuilder.QueryBuilder.bindMarker;
 import static com.datastax.oss.driver.api.querybuilder.QueryBuilder.selectFrom;
 import static com.datastax.oss.driver.api.querybuilder.relation.Relation.column;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletionStage;
 
 import com.datastax.apollo.entity.SpacecraftLocationOverTime;
 import com.datastax.apollo.entity.SpacecraftPressureOverTime;
@@ -16,6 +18,7 @@ import com.datastax.apollo.entity.SpacecraftTemperatureOverTime;
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.PagingIterable;
 import com.datastax.oss.driver.api.core.cql.BatchStatement;
+import com.datastax.oss.driver.api.core.cql.BatchStatementBuilder;
 import com.datastax.oss.driver.api.core.cql.BoundStatement;
 import com.datastax.oss.driver.api.core.cql.BoundStatementBuilder;
 import com.datastax.oss.driver.api.core.cql.DefaultBatchType;
@@ -116,6 +119,30 @@ public class SpacecraftInstrumentsQueryProvider {
                 .addStatement(bind(psInsertSpeedReading, speed, ehSpeed))
                 .addStatement(bind(psInsertLocationReading, location, ehLocation))
                 .build()).thenApply(rs -> null);
+    }
+    
+    public CompletionStage<Boolean> insertLocationReadingAsync(SpacecraftLocationOverTime[] readings) {
+        BatchStatementBuilder myBatch = BatchStatement.builder(DefaultBatchType.LOGGED);
+        Arrays.stream(readings).forEach(read -> myBatch.addStatement(bind(psInsertLocationReading, read, ehLocation)));
+        return cqlSession.executeAsync(myBatch.build()).thenApply(rs ->  rs.wasApplied());
+    }
+    
+    public CompletionStage<Boolean> insertTemperatureReadingAsync(SpacecraftTemperatureOverTime[] readings) {
+        BatchStatementBuilder myBatch = BatchStatement.builder(DefaultBatchType.LOGGED);
+        Arrays.stream(readings).forEach(read -> myBatch.addStatement(bind(psInsertTemperatureReading, read, ehTemperature)));
+        return cqlSession.executeAsync(myBatch.build()).thenApply(rs -> rs.wasApplied());
+    }
+    
+    public CompletionStage<Boolean> insertPressureReadingAsync(SpacecraftPressureOverTime[] readings) {
+        BatchStatementBuilder myBatch = BatchStatement.builder(DefaultBatchType.LOGGED);
+        Arrays.stream(readings).forEach(read -> myBatch.addStatement(bind(psInsertPressureReading, read, ehPressure)));
+        return cqlSession.executeAsync(myBatch.build()).thenApply(rs -> rs.wasApplied());
+    }
+    
+    public CompletionStage<Boolean> insertSpeedReadingAsync(SpacecraftSpeedOverTime[] readings) {
+        BatchStatementBuilder myBatch = BatchStatement.builder(DefaultBatchType.LOGGED);
+        Arrays.stream(readings).forEach(read -> myBatch.addStatement(bind(psInsertSpeedReading, read, ehSpeed)));
+        return cqlSession.executeAsync(myBatch.build()).thenApplyAsync(rs -> rs.wasApplied());
     }
     
     /**

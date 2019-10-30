@@ -2,6 +2,7 @@ package com.datastax.apollo.dao;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletionStage;
 import java.util.function.Function;
 
 import com.datastax.apollo.entity.SpacecraftLocationOverTime;
@@ -22,8 +23,7 @@ import com.datastax.oss.driver.api.mapper.annotations.Select;
 public interface SpacecraftInstrumentsDao {
     
     /**
-     * Search for temperature readings.
-     * TODO : We could replace the query provider here
+     * Search for temperature readings with MAPPER
      */
     @Select(customWhereClause = "spacecraft_name= :spacecraftName AND journey_id= :journeyId")
     PagingIterable<SpacecraftTemperatureOverTime> getTemperatureReading(
@@ -31,14 +31,16 @@ public interface SpacecraftInstrumentsDao {
             Function<BoundStatementBuilder, BoundStatementBuilder> setAttributes);
     
     /**
-     * Search for temperature readings.
+     * Search for temperature readings with QUERY PROVIDER
      */
     @QueryProvider(providerClass = SpacecraftInstrumentsQueryProvider.class, 
        entityHelpers = { SpacecraftTemperatureOverTime.class, SpacecraftPressureOverTime.class, 
                          SpacecraftLocationOverTime.class, SpacecraftSpeedOverTime.class})
     PagingIterable<SpacecraftTemperatureOverTime> getTemperatureReading(
-            String spacecraftName, UUID JourneyId, Optional<Integer> pageSize, Optional<String> pagingState);
-
+            String spacecraftName, UUID JourneyId, 
+            Optional<Integer> pageSize, 
+            Optional<String> pagingState);
+    
     /**
      * Upsert a temperature reading.
      *
@@ -49,6 +51,35 @@ public interface SpacecraftInstrumentsDao {
      */
     @Insert
     boolean upsertTemperature(SpacecraftTemperatureOverTime reading);
+    
+    /**
+     * Bulk inserts of temperature readings.
+     *
+     * @param reading
+     *      The temperature readings
+     */
+    @QueryProvider(providerClass = SpacecraftInstrumentsQueryProvider.class, 
+            entityHelpers = { SpacecraftTemperatureOverTime.class, SpacecraftPressureOverTime.class, 
+                              SpacecraftLocationOverTime.class, SpacecraftSpeedOverTime.class})
+    CompletionStage<Boolean> insertTemperatureReadingAsync(SpacecraftTemperatureOverTime[] readings);
+    
+    @QueryProvider(providerClass = SpacecraftInstrumentsQueryProvider.class, 
+            entityHelpers = { SpacecraftTemperatureOverTime.class, SpacecraftPressureOverTime.class, 
+                              SpacecraftLocationOverTime.class, SpacecraftSpeedOverTime.class})
+    CompletionStage<Boolean> insertLocationReadingAsync(SpacecraftLocationOverTime[] readings);
+    
+    @QueryProvider(providerClass = SpacecraftInstrumentsQueryProvider.class, 
+            entityHelpers = { SpacecraftTemperatureOverTime.class, SpacecraftPressureOverTime.class, 
+                              SpacecraftLocationOverTime.class, SpacecraftSpeedOverTime.class})
+    CompletionStage<Boolean> insertPressureReadingAsync(SpacecraftPressureOverTime[] readings);
+    
+    @QueryProvider(providerClass = SpacecraftInstrumentsQueryProvider.class, 
+            entityHelpers = { SpacecraftTemperatureOverTime.class, SpacecraftPressureOverTime.class, 
+                              SpacecraftLocationOverTime.class, SpacecraftSpeedOverTime.class})
+    CompletionStage<Boolean> insertSpeedReadingAsync(SpacecraftSpeedOverTime[] readings);
+    
+    
+    
 
     /**
      * Upsert a location reading.

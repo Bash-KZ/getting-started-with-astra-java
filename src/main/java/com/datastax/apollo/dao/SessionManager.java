@@ -1,5 +1,8 @@
 package com.datastax.apollo.dao;
 
+import java.io.FileNotFoundException;
+
+import com.datastax.apollo.utils.CqlFileUtils;
 import com.datastax.oss.driver.api.core.CqlSession;
 
 /**
@@ -94,8 +97,19 @@ public class SessionManager {
                     .withAuthCredentials(getUserName(),getPassword())
                     .withKeyspace(getKeySpace())
                     .build();
+            
+            // Once session has been initialized, creating schema
+            createSchemaIfNeeded(cqlSession);
         }
         return cqlSession;
+    }
+    
+    protected void createSchemaIfNeeded(CqlSession cqlSession) {
+        try {
+            CqlFileUtils.executeCQLFile(cqlSession, "schema.cql");
+        } catch (FileNotFoundException e) {
+            throw new IllegalStateException(e);
+        }
     }
     
     /**

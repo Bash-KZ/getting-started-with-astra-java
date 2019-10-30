@@ -13,10 +13,15 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.datastax.apollo.entity.SpacecraftJourneyCatalog;
@@ -123,30 +128,6 @@ public class SpacecraftController {
         return ResponseEntity.ok(journey.get());
     }
     
-    @PostMapping(value = "/{spacecraftName}/{journeyId}/preload")
-    @ApiOperation(value = "Load all metrics in bulk mode", response = List.class)
-    @ApiResponses({
-        @ApiResponse(code = 200, message = "Loading is done"),
-        @ApiResponse(code = 400, message = "spacecraftName is blank or contains invalid characters (expecting AlphaNumeric)"),
-        @ApiResponse(code = 404, message = "No journey exists for the provided spacecraftName and journeyid")
-    })
-    public ResponseEntity<String> preload(
-            @ApiParam(name="spacecraftName", value="Spacecraft name",example = "gemini3",required=true )
-            @PathVariable(value = "spacecraftName") String spacecraftName,
-            @ApiParam(name="journeyId", value="Identifer for journey",example = "abb7c000-c310-11ac-8080-808080808080",required=true )
-            @PathVariable(value = "journeyId") UUID journeyId,
-            @RequestParam("itemCount") int itemCount) {
-        Optional<SpacecraftJourneyCatalog> journey = apolloService.findJourneyById(spacecraftName, journeyId);
-        if (!journey.isPresent()) {
-            LOGGER.warn("Journey with spacecraft name {} and journeyid {} has not been found", spacecraftName, journeyId);
-            return ResponseEntity.notFound().build();
-        }
-        long top = System.currentTimeMillis();
-        apolloService.preload(itemCount, spacecraftName, journeyId);
-        long stop = System.currentTimeMillis();
-        return ResponseEntity.ok(itemCount + " item(s) loaded in " + (stop-top) + "millis");
-    }
-    
     /**
      * Create a new Journey for a Spacecraft
      */
@@ -176,17 +157,6 @@ public class SpacecraftController {
         // HTTP 201 with confirmation number
         return ResponseEntity.created(location).body(journeyId.toString());
     }
-    
-    @ExceptionHandler(value = IllegalArgumentException.class)
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public String _errorBadRequestHandler(IllegalArgumentException ex) {
-        return ex.getMessage();
-    }
-    
-    @ExceptionHandler(value = IllegalStateException.class)
-    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
-    public String _errorUnAuthorizedHandler(IllegalArgumentException ex) {
-        return ex.getMessage();
-    }
+   
 
 }

@@ -17,7 +17,6 @@ import com.datastax.apollo.dao.SpacecraftInstrumentsDao;
 import com.datastax.apollo.dao.SpacecraftJourneyDao;
 import com.datastax.apollo.dao.SpacecraftMapper;
 import com.datastax.apollo.dao.SpacecraftMapperBuilder;
-import com.datastax.apollo.entity.LocationUdt;
 import com.datastax.apollo.entity.SpacecraftJourneyCatalog;
 import com.datastax.apollo.entity.SpacecraftLocationOverTime;
 import com.datastax.apollo.entity.SpacecraftPressureOverTime;
@@ -41,66 +40,6 @@ public class ApolloService {
     /** Driver Daos. */
     private SpacecraftJourneyDao     spacecraftJourneyDao;
     private SpacecraftInstrumentsDao spacecraftInstrumentsDao;
-    
-    
-    /**
-     * Insert reading into database.
-     *
-     * @param itemCount
-     *      current item count
-     */
-    public void preload(int itemCount, String spacecraftName, UUID journeyId) {
-        SpacecraftLocationOverTime    loc   = new SpacecraftLocationOverTime();
-        loc.setJourney_id(journeyId);
-        loc.setSpacecraft_name(spacecraftName);
-        loc.setLocation_unit("km");
-        SpacecraftTemperatureOverTime temp  = new SpacecraftTemperatureOverTime();
-        temp.setSpacecraft_name(spacecraftName);
-        temp.setJourney_id(journeyId);
-        temp.setTemperature_unit("fahrenheit");
-        SpacecraftPressureOverTime    press = new SpacecraftPressureOverTime();
-        press.setJourney_id(journeyId);
-        press.setSpacecraft_name(spacecraftName);
-        press.setPressure_unit("kPa");
-        SpacecraftSpeedOverTime       speed = new SpacecraftSpeedOverTime();temp.setJourney_id(journeyId);
-        speed.setJourney_id(journeyId);
-        speed.setSpacecraft_name(spacecraftName);
-        speed.setSpeed_unit("km/h");
-        Instant start = Instant.now();
-        for (int i = 0; i < itemCount; i++) {
-            temp.setReading_time(start);
-            press.setReading_time(start);
-            speed.setReading_time(start);
-            
-            LocationUdt udt = new LocationUdt(0,0,0);
-            loc.setLocation(udt);
-            loc.setReading_time(start);
-            temp.setTemperature(Double.valueOf(69.3));
-            press.setPressure(Double.valueOf(100.5));
-            speed.setSpeed(Double.valueOf(30000));
-            getSpaceCraftInstrumentsDao().insertInstruments(temp,press, speed, loc);
-            
-            // Compute next value
-            start = start.plusSeconds(1);
-            udt.setX_coordinate(udt.getX_coordinate()+1);
-            udt.setY_coordinate(udt.getY_coordinate()+1);
-            udt.setZ_coordinate(udt.getZ_coordinate()+5);
-            temp.setTemperature(createRandomValue(temp.getTemperature()));
-            press.setPressure(createRandomValue(press.getPressure()));
-            speed.setSpeed(createRandomValue(speed.getSpeed()));
-        }
-    }
-    
-    private double createRandomValue(double lastValue) {
-        double up = Math.random() * 2;
-        double percentMove = (Math.random() * 1.0) / 100;
-        if (up < 1) {
-          lastValue -= percentMove * lastValue;
-        } else {
-          lastValue += percentMove * lastValue;
-        }
-        return lastValue;
-      }
     
     /**
      * Find all spacecrafts in the catalog.
@@ -149,7 +88,7 @@ public class ApolloService {
      */
     public UUID createSpacecraftJourney(String spacecraftName, String summary) {
         UUID journeyUid = Uuids.timeBased();
-        LOGGER.info("Creating journey {} for spacecraft {}", journeyUid, spacecraftName);
+        LOGGER.debug("Creating journey {} for spacecraft {}", journeyUid, spacecraftName);
         SpacecraftJourneyCatalog dto = new SpacecraftJourneyCatalog();
         dto.setName(spacecraftName);
         dto.setSummary(summary);
@@ -192,11 +131,11 @@ public class ApolloService {
      * @return
      *       true if successful
      */
-    public boolean insertTemperatureReading(SpacecraftTemperatureOverTime[] readings) {
-        for (int i=0; i< readings.length; i++) {
-            getSpaceCraftInstrumentsDao().upsertTemperature(readings[i]);
-        }
-        return true;
+    public void insertTemperatureReading(SpacecraftTemperatureOverTime[] readings) {
+        long top = System.currentTimeMillis();
+        getSpaceCraftInstrumentsDao().insertTemperatureReadingAsync(readings)
+                                     .whenComplete((res,ex) -> LOGGER.debug("{} temperature reading(s) inserted in {} millis", 
+                                            readings.length, System.currentTimeMillis() - top));
     }
 
     /**
@@ -207,11 +146,12 @@ public class ApolloService {
      * @return
      *       true if successful
      */
-    public boolean insertLocationReading(SpacecraftLocationOverTime[] readings) {
-        for (int i=0; i< readings.length; i++) {
-            getSpaceCraftInstrumentsDao().upsertLocation(readings[i]);
-        }
-        return true;
+    public void insertLocationReading(SpacecraftLocationOverTime[] readings) {
+        long top = System.currentTimeMillis();
+        getSpaceCraftInstrumentsDao()
+            .insertLocationReadingAsync(readings)
+            .whenComplete((res,ex) -> LOGGER.debug("{} location reading(s) inserted in {} millis", 
+                                            readings.length, System.currentTimeMillis() - top));
     }
 
     /**
@@ -222,11 +162,12 @@ public class ApolloService {
      * @return
      *       true if successful
      */
-    public boolean insertPressureReading(SpacecraftPressureOverTime[] readings) {
-        for (int i=0; i< readings.length; i++) {
-            getSpaceCraftInstrumentsDao().upsertPressure(readings[i]);
-        }
-        return true;
+    public void insertPressureReading(SpacecraftPressureOverTime[] readings) {
+        long top = System.currentTimeMillis();
+        getSpaceCraftInstrumentsDao()
+            .insertPressureReadingAsync(readings)
+            .whenComplete((res,ex) -> LOGGER.debug("{} pressure reading(s) inserted in {} millis", 
+                                            readings.length, System.currentTimeMillis() - top));
     }
 
     /**
@@ -237,13 +178,13 @@ public class ApolloService {
      * @return
      *       true if successful
      */
-    public boolean insertSpeedReading(SpacecraftSpeedOverTime[] readings) {
-        for (int i=0; i< readings.length; i++) {
-            getSpaceCraftInstrumentsDao().upsertSpeed(readings[i]);
-        }
-        return true;
+    public void insertSpeedReading(SpacecraftSpeedOverTime[] readings) {
+        long top = System.currentTimeMillis();
+        getSpaceCraftInstrumentsDao()
+            .insertSpeedReadingAsync(readings)
+            .whenComplete((res,ex) -> LOGGER.debug("{} speed reading(s) inserted in {} millis", 
+                                            readings.length, System.currentTimeMillis() - top));
     }
-
     
     /**
      * Retrieve pressure readings for a journey.
