@@ -10,7 +10,7 @@
  
 ```
 
-This provides an example REST backend built in Java using `Spring Boot` for use with the [Getting Started with Apollo UI](https://github.com/DataStax-Examples/getting-started-with-astra-ui).
+This provides an example REST backend built in Java using `Spring Boot` for use with the [Getting Started with Astra UI](https://github.com/DataStax-Examples/getting-started-with-astra-ui).
 
 Contributors: 
 - [bechbd](https://github.com/bechbd)
@@ -31,7 +31,7 @@ This application serves as the connection between the UI website and an underlyi
 
 ### Connecting to Astra with a Secure Connect Bundle
 
-To see how to connect to Astra using the Secure Connect Bundle you can look at the `connectToApollo()` method in [SessionManager](src/main/java/com/datastax/astra/dao/SessionManager.java).  In this method you will find the code which:
+To see how to connect to Astra using the Secure Connect Bundle you can look at the `connectToAstra()` method in [SessionManager](src/main/java/com/datastax/astra/dao/SessionManager.java).  In this method you will find the code which:
 
 1. Creates a `Cluster` instance using the builder.
    
@@ -89,7 +89,7 @@ This will startup the application running on `http://localhost:8080`
 You will know that you are up and working when you get the following in your terminal window:
 
 ```
-16:23:01.569 INFO  com.datastax.astra.GettingStartedWithAstra  : Started GettingStartedWithApollo in 1.851 seconds (JVM running for 2.39)
+16:23:01.569 INFO  com.datastax.astra.GettingStartedWithAstra  : Started GettingStartedWithAstra in 1.851 seconds (JVM running for 2.39)
 ```
 
 #### c) Access the API documentation from a browser
