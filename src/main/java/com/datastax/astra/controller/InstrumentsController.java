@@ -1,4 +1,4 @@
-package com.datastax.apollo.controller;
+package com.datastax.astra.controller;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.datastax.apollo.entity.SpacecraftLocationOverTime;
-import com.datastax.apollo.entity.SpacecraftPressureOverTime;
-import com.datastax.apollo.entity.SpacecraftSpeedOverTime;
-import com.datastax.apollo.entity.SpacecraftTemperatureOverTime;
-import com.datastax.apollo.model.PagedResultWrapper;
-import com.datastax.apollo.service.ApolloService;
+import com.datastax.astra.entity.SpacecraftLocationOverTime;
+import com.datastax.astra.entity.SpacecraftPressureOverTime;
+import com.datastax.astra.entity.SpacecraftSpeedOverTime;
+import com.datastax.astra.entity.SpacecraftTemperatureOverTime;
+import com.datastax.astra.model.PagedResultWrapper;
+import com.datastax.astra.service.AstraService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,7 +42,7 @@ public class InstrumentsController {
     private static final Logger LOGGER = LoggerFactory.getLogger(InstrumentsController.class);
     
     /** Service implementation Injection. */
-    private ApolloService apolloService;
+    private AstraService astraService;
 
     /**
      * Constructor.
@@ -50,8 +50,8 @@ public class InstrumentsController {
      * @param spacecraftService
      *      service implementation
      */
-    public InstrumentsController(ApolloService apolloService) {
-        this.apolloService = apolloService;
+    public InstrumentsController(AstraService astraService) {
+        this.astraService = astraService;
     }
     
     /**
@@ -70,7 +70,7 @@ public class InstrumentsController {
             @ApiParam(name="pagestate", value="Use to retrieve next pages", required=false )
             @RequestParam("pagestate") Optional<String> pageState) {
         LOGGER.debug("Retrieving temperature readings for spacecraft {} and journey {}", spacecraftName, journeyId);
-        PagedResultWrapper<SpacecraftTemperatureOverTime> res = apolloService.getTemperatureReading(spacecraftName, journeyId, pageSize, pageState);
+        PagedResultWrapper<SpacecraftTemperatureOverTime> res = astraService.getTemperatureReading(spacecraftName, journeyId, pageSize, pageState);
         return ResponseEntity.ok(res);
     }
     
@@ -90,7 +90,7 @@ public class InstrumentsController {
             @ApiParam(name="pagestate", value="Use to retrieve next pages", required=false )
             @RequestParam("pagestate") Optional<String> pageState) {
         LOGGER.debug("Retrieving pressure readings for spacecraft {} and journey {}", spacecraftName, journeyId);
-        return ResponseEntity.ok(apolloService.getPressureReading(spacecraftName, journeyId, pageSize, pageState));
+        return ResponseEntity.ok(astraService.getPressureReading(spacecraftName, journeyId, pageSize, pageState));
     } 
     
     /**
@@ -109,7 +109,7 @@ public class InstrumentsController {
             @ApiParam(name="pagestate", value="Use to retrieve next pages", required=false )
             @RequestParam("pagestate") Optional<String> pageState) {
         LOGGER.debug("Retrieving pressure readings for spacecraft {} and journey {}", spacecraftName, journeyId);
-        return ResponseEntity.ok(apolloService.getSpeedReading(spacecraftName, journeyId, pageSize, pageState));
+        return ResponseEntity.ok(astraService.getSpeedReading(spacecraftName, journeyId, pageSize, pageState));
     } 
     
     /**
@@ -128,7 +128,7 @@ public class InstrumentsController {
             @ApiParam(name="pagestate", value="Use to retrieve next pages", required=false )
             @RequestParam("pagestate") Optional<String> pageState) {
         LOGGER.debug("Retrieving pressure readings for spacecraft {} and journey {}", spacecraftName, journeyId);
-        return ResponseEntity.ok(apolloService.getLocationReading(spacecraftName, journeyId, pageSize, pageState));
+        return ResponseEntity.ok(astraService.getLocationReading(spacecraftName, journeyId, pageSize, pageState));
     }
 
     @PostMapping(value="/temperature", consumes = APPLICATION_JSON_VALUE)
@@ -142,7 +142,7 @@ public class InstrumentsController {
             @RequestBody SpacecraftTemperatureOverTime[] readings) {
         LOGGER.debug("Saving temperature readings for spacecraft {} and journey {}", spacecraftName, journeyId);
         if (null != readings && readings.length > 0) {
-            apolloService.insertTemperatureReading(readings);
+            astraService.insertTemperatureReading(readings);
         }
         return ResponseEntity.ok("OK");
     }
@@ -158,7 +158,7 @@ public class InstrumentsController {
             @RequestBody SpacecraftLocationOverTime[] readings) {
         LOGGER.debug("Saving location reading(s) for spacecraft {} and journey {}", spacecraftName, journeyId);
         if (null != readings && readings.length > 0) {
-            apolloService.insertLocationReading(readings);
+            astraService.insertLocationReading(readings);
         }
         return ResponseEntity.ok("OK");
     }
@@ -174,7 +174,7 @@ public class InstrumentsController {
             @RequestBody SpacecraftPressureOverTime[] readings) {
         LOGGER.debug("Saving pressure readings for spacecraft {} and journey {}", spacecraftName, journeyId);
         if (null != readings && readings.length > 0) {
-            apolloService.insertPressureReading(readings);
+            astraService.insertPressureReading(readings);
         }
         return ResponseEntity.ok("OK");
     }
@@ -190,7 +190,7 @@ public class InstrumentsController {
             @RequestBody SpacecraftSpeedOverTime[] readings) {
         LOGGER.debug("Saving speed readings for spacecraft {} and journey {}", spacecraftName, journeyId);
         if (null != readings && readings.length > 0) {
-            apolloService.insertSpeedReading(readings);
+            astraService.insertSpeedReading(readings);
         }
         return ResponseEntity.ok("OK");
     }

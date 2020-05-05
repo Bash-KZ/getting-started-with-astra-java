@@ -1,4 +1,4 @@
-package com.datastax.apollo.entity;
+package com.datastax.astra.entity;
 
 import java.time.Instant;
 import java.util.UUID;

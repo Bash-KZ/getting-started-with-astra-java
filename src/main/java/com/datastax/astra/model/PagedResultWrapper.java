@@ -1,4 +1,4 @@
-package com.datastax.apollo.model;
+package com.datastax.astra.model;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;

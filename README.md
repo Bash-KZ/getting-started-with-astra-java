@@ -1,16 +1,16 @@
-# Getting Started with Apollo, Java BACKEND
+# Getting Started with Astra, Java BACKEND
 
 ```
-    _____                .__  .__          
-   /  _  \ ______   ____ |  | |  |   ____  
-  /  /_\  \\____ \ /  _ \|  | |  |  /  _ \ 
- /    |    \  |_> >  <_> )  |_|  |_(  <_> )
- \____|__  /   __/ \____/|____/____/\____/ 
-         \/|__|                            
+  ___        _
+ / _ \      | |
+/ /_\ \ ___ | |_  _ __   __ _
+|  _  |/ __|| __|| '__| / _` |
+| | | |\__ \| |_ | |   | (_| |
+\_| |_/|___/ \__||_|    \__,_|
  
 ```
 
-This provides an example REST backend built in Java using `Spring Boot` for use with the [Getting Started with Apollo UI](https://github.com/DataStax-Examples/getting-started-with-apollo-ui).
+This provides an example REST backend built in Java using `Spring Boot` for use with the [Getting Started with Apollo UI](https://github.com/DataStax-Examples/getting-started-with-astra-ui).
 
 Contributors: 
 - [bechbd](https://github.com/bechbd)
@@ -18,33 +18,33 @@ Contributors:
 - [csplinter](https://github.com/csplinter)
 
 ## Objectives
-* How to connect to Apollo via the Secure Connect Bundle
+* How to connect to Astra via the Secure Connect Bundle
 * How to manage a Cassandra Session within a JAVA web application
 
 ## How this Sample Works
 
-This is an example of a Spring Boot Microservice for use with the Apollo Getting Started UI which is found [here](https://github.com/DataStax-Examples/getting-started-with-apollo-ui).
+This is an example of a Spring Boot Microservice for use with the Astra Getting Started UI which is found [here](https://github.com/DataStax-Examples/getting-started-with-astra-ui).
 
-This application serves as the connection between the UI website and an underlying Apollo database. It has Swagger installed so once it is running you can look at the Swagger UI here:
+This application serves as the connection between the UI website and an underlying Astra database. It has Swagger installed so once it is running you can look at the Swagger UI here:
 
 ```http://localhost:8080/```
 
-### Connecting to Apollo with a Secure Connect Bundle
+### Connecting to Astra with a Secure Connect Bundle
 
-To see how to connect to Apollo using the Secure Connect Bundle you can look at the `connectToApollo()` method in [SessionManager](src/main/java/com/datastax/apollo/dao/SessionManager.java).  In this method you will find the code which:
+To see how to connect to Astra using the Secure Connect Bundle you can look at the `connectToApollo()` method in [SessionManager](src/main/java/com/datastax/astra/dao/SessionManager.java).  In this method you will find the code which:
 
 1. Creates a `Cluster` instance using the builder.
    
    ```CqlSession cqlSession = CqlSession.builder()```
 
-2. Specifies the local file path to the Secure Connect Bundle ZIP file that has been downloaded from your Apollo Database.  
+2. Specifies the local file path to the Secure Connect Bundle ZIP file that has been downloaded from your Astra Database.
    
    ```.withCloudSecureConnectBundle(getSecureConnectionBundlePath())```
-3. Set the username and password for your Apollo Database
+3. Set the username and password for your Astra Database
 
    ```.withAuthCredentials(getUserName(),getPassword())```
   
-4.  Build the `Cluster` object then connect to your Apollo database specifying the keyspace to use.
+4.  Build the `Cluster` object then connect to your Astra database specifying the keyspace to use.
 
     ```.withKeyspace(getKeySpace()).build()```
 
@@ -62,9 +62,9 @@ Creation of `CqlSession` objects within an application is an expensive process a
 ### Prerequisites
 
 * Java 11+
-* An Apollo compatible Java driver, instructions may be found [here](https://helpdocs.datastax.com/aws/dscloud/apollo/dscloudConnectJavaDriver.html) to install this locally.
-* An Apollo database with the CQL schema located in [schema.cql](src/main/resources/schema.cql) already added.
-* The username, password, keyspace name, and secure connect bundle downloaded from your Apollo Database.  For information on how to obtain these credentials please read the documentation found [here](https://helpdocs.datastax.com/aws/dscloud/apollo/dscloudObtainingCredentials.html).
+* An Astra compatible Java driver, instructions may be found [here](https://helpdocs.datastax.com/aws/dscloud/astra/dscloudConnectJavaDriver.html) to install this locally.
+* An Astra database with the CQL schema located in [schema.cql](src/main/resources/schema.cql) already added.
+* The username, password, keyspace name, and secure connect bundle downloaded from your Astra Database.  For information on how to obtain these credentials please read the documentation found [here](https://helpdocs.datastax.com/aws/dscloud/astra/dscloudObtainingCredentials.html).
 
 ### Running
 
@@ -73,13 +73,13 @@ This application is a Spring Boot web application. This sample can be run from t
 #### a) Clone this repository
 
 ```
-git clone https://github.com/DataStax-Examples/getting-started-with-apollo-java.git
+git clone https://github.com/DataStax-Examples/getting-started-with-astra-java.git
 ```
 
 #### b) compile and start the backend *(maven 3.6+ and java11+ required)*
 
 ```
-cd getting-started-with-apollo-java
+cd getting-started-with-astra-java
 
 mvn spring-boot:run
 ```
@@ -89,7 +89,7 @@ This will startup the application running on `http://localhost:8080`
 You will know that you are up and working when you get the following in your terminal window:
 
 ```
-16:23:01.569 INFO  com.datastax.apollo.GettingStartedWithApollo  : Started GettingStartedWithApollo in 1.851 seconds (JVM running for 2.39)
+16:23:01.569 INFO  com.datastax.astra.GettingStartedWithAstra  : Started GettingStartedWithApollo in 1.851 seconds (JVM running for 2.39)
 ```
 
 #### c) Access the API documentation from a browser
@@ -121,5 +121,5 @@ mvn dockerfile:build
 
 To run the project in docker and expose correct port use the following:
 ```
-docker run clunven/getting-started-with-apollo-java:latest -p 8080:8080
+docker run clunven/getting-started-with-astra-java:latest -p 8080:8080
 ```

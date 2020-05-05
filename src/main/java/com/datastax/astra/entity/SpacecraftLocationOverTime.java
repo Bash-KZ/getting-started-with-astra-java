@@ -1,4 +1,4 @@
-package com.datastax.apollo.entity;
+package com.datastax.astra.entity;
 
 import com.datastax.oss.driver.api.mapper.annotations.CqlName;
 import com.datastax.oss.driver.api.mapper.annotations.Entity;

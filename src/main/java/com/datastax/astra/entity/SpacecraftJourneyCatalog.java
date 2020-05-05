@@ -1,4 +1,4 @@
-package com.datastax.apollo.entity;
+package com.datastax.astra.entity;
 
 import java.io.Serializable;
 import java.time.Instant;

@@ -1,4 +1,4 @@
-package com.datastax.apollo.controller;
+package com.datastax.astra.controller;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.datastax.apollo.dao.SessionManager;
+import com.datastax.astra.dao.SessionManager;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -66,7 +66,7 @@ public class CredentialsController {
     @ApiImplicitParams({
         @ApiImplicitParam(
             name = "file",
-            value = "A binary zip file provided by apollo to initiate a 2-ways SSL connection",
+            value = "A binary zip file provided by astra to initiate a 2-ways SSL connection",
             required = true, dataType = "file", paramType = "form")
     })
     public ResponseEntity<String> saveCredentials(
