@@ -16,6 +16,7 @@ Contributors:
 - [bechbd](https://github.com/bechbd)
 - [clun](https://github.com/clun)
 - [csplinter](https://github.com/csplinter)
+- [msmygit](https://github.com/msmygit)
 
 ## Objectives
 * How to connect to Astra via the Secure Connect Bundle
