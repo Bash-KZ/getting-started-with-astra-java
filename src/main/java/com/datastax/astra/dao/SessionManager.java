@@ -1,6 +1,7 @@
 package com.datastax.astra.dao;
 
 import java.io.FileNotFoundException;
+import java.nio.file.Paths;
 
 import com.datastax.astra.utils.CqlFileUtils;
 import com.datastax.oss.driver.api.core.CqlSession;
@@ -73,7 +74,7 @@ public class SessionManager {
     public void testCredentials(String user, String passwd, String keyspce, String secureConnectionBundlePath) {
         // Autocloseable temporary session
         try (CqlSession tmpSession = CqlSession.builder()
-                .withCloudSecureConnectBundle(secureConnectionBundlePath)
+                .withCloudSecureConnectBundle(Paths.get(secureConnectionBundlePath))
                 .withAuthCredentials(user, passwd)
                 .withKeyspace(keyspce).build()) {
             tmpSession.execute(QUERY_HEALTH_CHECK);
@@ -93,7 +94,7 @@ public class SessionManager {
             throw new IllegalStateException("Please initialize the connection parameters first with saveCredentials(...)");
         }
         if (null == cqlSession) {
-            cqlSession = CqlSession.builder().withCloudSecureConnectBundle(getSecureConnectionBundlePath())
+            cqlSession = CqlSession.builder().withCloudSecureConnectBundle(Paths.get(getSecureConnectionBundlePath()))
                     .withAuthCredentials(getUserName(),getPassword())
                     .withKeyspace(getKeySpace())
                     .build();
