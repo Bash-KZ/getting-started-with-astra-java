@@ -40,7 +40,7 @@ To see how to connect to Astra using the Secure Connect Bundle you can look at t
 
 2. Specifies the local file path to the Secure Connect Bundle ZIP file that has been downloaded from your Astra Database.
    
-   ```.withCloudSecureConnectBundle(getSecureConnectionBundlePath())```
+   ```.withCloudSecureConnectBundle(Paths.get(getSecureConnectionBundlePath()))```
 3. Set the username and password for your Astra Database
 
    ```.withAuthCredentials(getUserName(),getPassword())```
@@ -63,9 +63,9 @@ Creation of `CqlSession` objects within an application is an expensive process a
 ### Prerequisites
 
 * Java 11+
-* An Astra compatible Java driver, instructions may be found [here](https://helpdocs.datastax.com/aws/dscloud/astra/dscloudConnectJavaDriver.html) to install this locally.
+* An Astra compatible Java driver, instructions may be found [here](https://docs.datastax.com/en/astra/aws/doc/dscloud/astra/dscloudConnectJavaDriver.html) to install this locally.
 * An Astra database with the CQL schema located in [schema.cql](src/main/resources/schema.cql) already added.
-* The username, password, keyspace name, and secure connect bundle downloaded from your Astra Database.  For information on how to obtain these credentials please read the documentation found [here](https://helpdocs.datastax.com/aws/dscloud/astra/dscloudObtainingCredentials.html).
+* The username, password, keyspace name, and secure connect bundle downloaded from your Astra Database.  For information on how to obtain these credentials please read the documentation found [here](https://docs.datastax.com/en/astra/aws/doc/dscloud/astra/dscloudObtainingCredentials.html).
 
 ### Running
 
