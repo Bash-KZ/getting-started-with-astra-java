@@ -1,4 +1,4 @@
-package com.datastax.apollo.service;
+package com.datastax.astra.service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -12,17 +12,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.datastax.apollo.dao.SessionManager;
-import com.datastax.apollo.dao.SpacecraftInstrumentsDao;
-import com.datastax.apollo.dao.SpacecraftJourneyDao;
-import com.datastax.apollo.dao.SpacecraftMapper;
-import com.datastax.apollo.dao.SpacecraftMapperBuilder;
-import com.datastax.apollo.entity.SpacecraftJourneyCatalog;
-import com.datastax.apollo.entity.SpacecraftLocationOverTime;
-import com.datastax.apollo.entity.SpacecraftPressureOverTime;
-import com.datastax.apollo.entity.SpacecraftSpeedOverTime;
-import com.datastax.apollo.entity.SpacecraftTemperatureOverTime;
-import com.datastax.apollo.model.PagedResultWrapper;
+import com.datastax.astra.dao.SessionManager;
+import com.datastax.astra.dao.SpacecraftInstrumentsDao;
+import com.datastax.astra.dao.SpacecraftJourneyDao;
+import com.datastax.astra.dao.SpacecraftMapper;
+import com.datastax.astra.dao.SpacecraftMapperBuilder;
+import com.datastax.astra.entity.SpacecraftJourneyCatalog;
+import com.datastax.astra.entity.SpacecraftLocationOverTime;
+import com.datastax.astra.entity.SpacecraftPressureOverTime;
+import com.datastax.astra.entity.SpacecraftSpeedOverTime;
+import com.datastax.astra.entity.SpacecraftTemperatureOverTime;
+import com.datastax.astra.model.PagedResultWrapper;
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.PagingIterable;
 import com.datastax.oss.driver.api.core.uuid.Uuids;
@@ -32,10 +32,10 @@ import com.datastax.oss.driver.api.core.uuid.Uuids;
  * 
  */
 @Component
-public class ApolloService {
+public class AstraService {
 
     /** Logger for the class. */
-    private static final Logger LOGGER = LoggerFactory.getLogger(ApolloService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AstraService.class);
    
     /** Driver Daos. */
     private SpacecraftJourneyDao     spacecraftJourneyDao;
@@ -257,7 +257,7 @@ public class ApolloService {
     
     protected synchronized SpacecraftJourneyDao getSpaceCraftJourneyDao() {
         if (spacecraftJourneyDao == null) {
-            CqlSession cqlSession   = SessionManager.getInstance().connectToApollo();
+            CqlSession cqlSession   = SessionManager.getInstance().connectToAstra();
             SpacecraftMapper mapper = new SpacecraftMapperBuilder(cqlSession).build();
             this.spacecraftJourneyDao = mapper.spacecraftJourneyDao(cqlSession.getKeyspace().get());
         }
@@ -266,7 +266,7 @@ public class ApolloService {
     
     protected synchronized SpacecraftInstrumentsDao getSpaceCraftInstrumentsDao() {
         if (spacecraftInstrumentsDao == null) {
-            CqlSession cqlSession   = SessionManager.getInstance().connectToApollo();
+            CqlSession cqlSession   = SessionManager.getInstance().connectToAstra();
             SpacecraftMapper mapper = new SpacecraftMapperBuilder(cqlSession).build();
             this.spacecraftInstrumentsDao = mapper.spacecraftInstrumentsDao(cqlSession.getKeyspace().get());
         }

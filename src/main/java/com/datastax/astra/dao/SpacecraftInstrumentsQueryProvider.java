@@ -1,7 +1,7 @@
-package com.datastax.apollo.dao;
+package com.datastax.astra.dao;
 
-import static com.datastax.apollo.entity.AbstractInstrumentReading.COLUMN_JOURNEY_ID;
-import static com.datastax.apollo.entity.AbstractInstrumentReading.COLUMN_SPACECRAFT_NAME;
+import static com.datastax.astra.entity.AbstractInstrumentReading.COLUMN_JOURNEY_ID;
+import static com.datastax.astra.entity.AbstractInstrumentReading.COLUMN_SPACECRAFT_NAME;
 import static com.datastax.oss.driver.api.querybuilder.QueryBuilder.bindMarker;
 import static com.datastax.oss.driver.api.querybuilder.QueryBuilder.selectFrom;
 import static com.datastax.oss.driver.api.querybuilder.relation.Relation.column;
@@ -11,10 +11,10 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletionStage;
 
-import com.datastax.apollo.entity.SpacecraftLocationOverTime;
-import com.datastax.apollo.entity.SpacecraftPressureOverTime;
-import com.datastax.apollo.entity.SpacecraftSpeedOverTime;
-import com.datastax.apollo.entity.SpacecraftTemperatureOverTime;
+import com.datastax.astra.entity.SpacecraftLocationOverTime;
+import com.datastax.astra.entity.SpacecraftPressureOverTime;
+import com.datastax.astra.entity.SpacecraftSpeedOverTime;
+import com.datastax.astra.entity.SpacecraftTemperatureOverTime;
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.PagingIterable;
 import com.datastax.oss.driver.api.core.cql.BatchStatement;
@@ -44,7 +44,7 @@ public class SpacecraftInstrumentsQueryProvider {
     private EntityHelper<SpacecraftLocationOverTime>    ehLocation;
     private EntityHelper<SpacecraftSpeedOverTime>       ehSpeed;
     
-    /** Statements Against Apollo. */
+    /** Statements Against Astra. */
     private PreparedStatement psInsertTemperatureReading;
     private PreparedStatement psInsertPressureReading;
     private PreparedStatement psInsertLocationReading;

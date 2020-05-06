@@ -1,9 +1,9 @@
-package com.datastax.apollo.dao;
+package com.datastax.astra.dao;
 
 import java.util.Optional;
 import java.util.UUID;
 
-import com.datastax.apollo.entity.SpacecraftJourneyCatalog;
+import com.datastax.astra.entity.SpacecraftJourneyCatalog;
 import com.datastax.oss.driver.api.core.PagingIterable;
 import com.datastax.oss.driver.api.mapper.annotations.Dao;
 import com.datastax.oss.driver.api.mapper.annotations.Insert;

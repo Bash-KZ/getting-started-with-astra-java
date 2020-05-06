@@ -1,14 +1,14 @@
-package com.datastax.apollo.dao;
+package com.datastax.astra.dao;
 
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletionStage;
 import java.util.function.Function;
 
-import com.datastax.apollo.entity.SpacecraftLocationOverTime;
-import com.datastax.apollo.entity.SpacecraftPressureOverTime;
-import com.datastax.apollo.entity.SpacecraftSpeedOverTime;
-import com.datastax.apollo.entity.SpacecraftTemperatureOverTime;
+import com.datastax.astra.entity.SpacecraftLocationOverTime;
+import com.datastax.astra.entity.SpacecraftPressureOverTime;
+import com.datastax.astra.entity.SpacecraftSpeedOverTime;
+import com.datastax.astra.entity.SpacecraftTemperatureOverTime;
 import com.datastax.oss.driver.api.core.PagingIterable;
 import com.datastax.oss.driver.api.core.cql.BoundStatementBuilder;
 import com.datastax.oss.driver.api.mapper.annotations.Dao;

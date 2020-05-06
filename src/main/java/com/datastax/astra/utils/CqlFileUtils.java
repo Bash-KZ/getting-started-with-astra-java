@@ -1,4 +1,4 @@
-package com.datastax.apollo.utils;
+package com.datastax.astra.utils;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;

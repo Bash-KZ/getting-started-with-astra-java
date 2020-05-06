@@ -1,4 +1,4 @@
-package com.datastax.apollo.dao;
+package com.datastax.astra.dao;
 
 import com.datastax.oss.driver.api.core.CqlIdentifier;
 import com.datastax.oss.driver.api.mapper.annotations.Dao;

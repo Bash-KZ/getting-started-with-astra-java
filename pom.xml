@@ -4,11 +4,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.datastax.apollo</groupId>
-	<artifactId>getting-started-with-apollo-java</artifactId>
+	<groupId>com.datastax.astra</groupId>
+	<artifactId>getting-started-with-astra-java</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	<name>getting-started-with-apollo-java</name>
-	<description>Sample Application to work with Apollo</description>
+	<name>getting-started-with-astra-java</name>
+	<description>Sample Application to work with Astra</description>
 	<packaging>jar</packaging>
 
 	<parent>
@@ -106,7 +106,7 @@
                <artifactId>dockerfile-maven-plugin</artifactId>
                <version>${version.maven.plugin.docker}</version>
               <configuration>
-				<repository>clunven/getting-started-with-apollo-java</repository>
+				<repository>clunven/getting-started-with-astra-java</repository>
 				<buildArgs>
 					<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
 				</buildArgs>

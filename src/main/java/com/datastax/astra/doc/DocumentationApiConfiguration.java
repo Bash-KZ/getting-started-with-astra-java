@@ -1,4 +1,4 @@
-package com.datastax.apollo.doc;
+package com.datastax.astra.doc;
 
 /*
  * #%L
@@ -23,7 +23,7 @@ package com.datastax.apollo.doc;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.datastax.apollo.GettingStartedWithApollo;
+import com.datastax.astra.GettingStartedWithAstra;
 
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -45,9 +45,9 @@ public class DocumentationApiConfiguration {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
-            .groupName("GettingStartedWithApollo")
+            .groupName("GettingStartedWithAstra")
             .select()
-            .apis(RequestHandlerSelectors.basePackage("com.datastax.apollo"))
+            .apis(RequestHandlerSelectors.basePackage("com.datastax.astra"))
             .paths(PathSelectors.regex("/api.*"))
             .build()
             .apiInfo(apiInfo())
@@ -61,9 +61,9 @@ public class DocumentationApiConfiguration {
      */
     private ApiInfo apiInfo() {
         ApiInfoBuilder builder = new ApiInfoBuilder();
-        builder.title("Apollo Getting Started Backend API");
-        builder.description("Start with Apollo in Minute");
-        builder.version(GettingStartedWithApollo.class.getPackage().getImplementationVersion());
+        builder.title("Astra Getting Started Backend API");
+        builder.description("Start with Astra in Minute");
+        builder.version(GettingStartedWithAstra.class.getPackage().getImplementationVersion());
         return builder.build();
     }
 }

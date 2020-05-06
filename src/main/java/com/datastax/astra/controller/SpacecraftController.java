@@ -1,4 +1,4 @@
-package com.datastax.apollo.controller;
+package com.datastax.astra.controller;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
@@ -24,8 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.datastax.apollo.entity.SpacecraftJourneyCatalog;
-import com.datastax.apollo.service.ApolloService;
+import com.datastax.astra.entity.SpacecraftJourneyCatalog;
+import com.datastax.astra.service.AstraService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -50,7 +50,7 @@ public class SpacecraftController {
     private static final Logger LOGGER = LoggerFactory.getLogger(SpacecraftController.class);
     
     /** Service implementation Injection. */
-    private ApolloService apolloService;
+    private AstraService astraService;
 
     /**
      * Constructor.
@@ -58,8 +58,8 @@ public class SpacecraftController {
      * @param spacecraftService
      *      service implementation
      */
-    public SpacecraftController(ApolloService spacecraftService) {
-        this.apolloService = spacecraftService;
+    public SpacecraftController(AstraService spacecraftService) {
+        this.astraService = spacecraftService;
     }
     
     /**
@@ -73,7 +73,7 @@ public class SpacecraftController {
     @ApiResponse(code = 200, message = "List all journeys for a spacecraft")
     public ResponseEntity<List<SpacecraftJourneyCatalog>> findAllSpacecrafts() {
         LOGGER.info("Retrieving all spacecrafts");
-        return ResponseEntity.ok(apolloService.findAllSpacecrafts());
+        return ResponseEntity.ok(astraService.findAllSpacecrafts());
     }
     
     /**
@@ -91,7 +91,7 @@ public class SpacecraftController {
             @ApiParam(name="spacecraftName", value="Spacecraft name",example = "gemini3",required=true )
             @PathVariable(value = "spacecraftName") String spaceCraftName) {
         LOGGER.info("Retrieving all journey for spacecraft {}", spaceCraftName);
-        return ResponseEntity.ok(apolloService.findAllJourneysForSpacecraft(spaceCraftName));
+        return ResponseEntity.ok(astraService.findAllJourneysForSpacecraft(spaceCraftName));
     }
     
     /**
@@ -119,7 +119,7 @@ public class SpacecraftController {
             @PathVariable(value = "journeyId") UUID journeyId) {
         LOGGER.info("Fetching journey with spacecraft name {} and journeyid {}", spacecraftName, journeyId);
         // Invoking Service
-        Optional<SpacecraftJourneyCatalog> journey = apolloService.findJourneyById(spacecraftName, journeyId);
+        Optional<SpacecraftJourneyCatalog> journey = astraService.findJourneyById(spacecraftName, journeyId);
         // Routing Result
         if (!journey.isPresent()) {
             LOGGER.warn("Journey with spacecraft name {} and journeyid {} has not been found", spacecraftName, journeyId);
@@ -148,7 +148,7 @@ public class SpacecraftController {
             @ApiParam(name="spacecraftName", value="Spacecraft name",example = "soyuztm-8",required=true )
             @PathVariable(value = "spacecraftName") String spacecraftName,
             @RequestBody String summary) {
-        UUID journeyId = apolloService.createSpacecraftJourney(spacecraftName, summary);
+        UUID journeyId = astraService.createSpacecraftJourney(spacecraftName, summary);
         // HTTP Created spec, return target resource in 'location' header
         URI location = ServletUriComponentsBuilder.fromRequestUri(request)
                 .replacePath("/api/spacecrafts/{spacecraftName}/{journeyId}")

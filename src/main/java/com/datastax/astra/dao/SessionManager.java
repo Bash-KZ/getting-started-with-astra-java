@@ -1,8 +1,8 @@
-package com.datastax.apollo.dao;
+package com.datastax.astra.dao;
 
 import java.io.FileNotFoundException;
 
-import com.datastax.apollo.utils.CqlFileUtils;
+import com.datastax.astra.utils.CqlFileUtils;
 import com.datastax.oss.driver.api.core.CqlSession;
 
 /**
@@ -88,7 +88,7 @@ public class SessionManager {
      * @return
      *       current value of 'cqlSession'
      */
-    public CqlSession connectToApollo() {
+    public CqlSession connectToAstra() {
         if (!isInitialized()) {
             throw new IllegalStateException("Please initialize the connection parameters first with saveCredentials(...)");
         }
@@ -117,7 +117,7 @@ public class SessionManager {
      */
     public void checkConnection() {
         try {
-            connectToApollo().execute(QUERY_HEALTH_CHECK);
+            connectToAstra().execute(QUERY_HEALTH_CHECK);
         } catch(RuntimeException re) {
             throw new IllegalStateException(re);
         }
