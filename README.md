@@ -1,4 +1,4 @@
-# Getting Started with Astra, Java BACKEND
+# Getting Started with Apache Cassandra™ and Java using DataStax Astra
 
 ```
   ___        _
