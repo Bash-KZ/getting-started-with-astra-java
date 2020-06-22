@@ -101,12 +101,12 @@ You will know that you are up and working when you get the following in your ter
 
 #### d) Setup the user interface to use this backend
 
-To setup the UI to connect to Java backend define `.env` file with the following value:
+To setup the UI to connect to Java backend define a `.env` file in the `getting-started-with-astra-ui` project main directory. Inside the file it should have one entry pointing to this project's API endpoint:
 
 ```
 BASE_ADDRESS=http://localhost:8080/api
 ```
-
+Once you start that project with a `npm run build` it will point the UI to the backend API which will then be using Astra as a database. When you first connect to the UI, a dialog box will open asking for Astra connection information. 
 
 # II - Building the docker image
 
