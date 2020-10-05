@@ -30,6 +30,10 @@ This application serves as the connection between the UI website and an underlyi
 
 ```http://localhost:8080/```
 
+Getting started with Astra & Java tutorial here:
+[![Tutorial](https://user-images.githubusercontent.com/69874632/95136870-c96ff080-071b-11eb-9f3d-32d561da248e.png)](https://www.youtube.com/watch?v=MBGPLgbiKkY "Tutorial")
+
+
 ### Connecting to Astra with a Secure Connect Bundle
 
 To see how to connect to Astra using the Secure Connect Bundle you can look at the `connectToAstra()` method in [SessionManager](src/main/java/com/datastax/astra/dao/SessionManager.java).  In this method you will find the code which:
