@@ -16,13 +16,6 @@ This provides an example REST backend built in Java using `Spring Boot` for use 
 ## How this Works
 This is an example of a Spring Boot Microservice for use with the Astra Getting Started UI which is found [here](https://github.com/DataStax-Examples/getting-started-with-astra-ui).
 
-This application serves as the connection between the UI website and an underlying Astra database. It has Swagger installed so once it is running you can look at the Swagger UI here:
-
-```http://localhost:8080/```
-
-Getting started with Astra & Java tutorial here:
-[![Tutorial](https://user-images.githubusercontent.com/69874632/95136870-c96ff080-071b-11eb-9f3d-32d561da248e.png)](https://www.youtube.com/watch?v=MBGPLgbiKkY "Tutorial")
-
 ## Get Started
 To build and play with this app, follow the build instructions that are located here: [https://github.com/DataStax-Examples/getting-started-with-astra-java](https://github.com/DataStax-Examples/getting-started-with-astra-java#prerequisites)
 
