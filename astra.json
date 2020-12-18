@@ -1,5 +1,5 @@
 {
-  "name": "Getting Started with Cassandra + Java + Astra",
+  "name": "Getting Started with Java + Spring + AstraDB",
   "description": "This provides an example REST backend built in Java using Spring Boot for use with the Getting Started with Astra UI.",
   "duration": "50 minutes",
   "skillLevel": "Intermediate",
@@ -7,6 +7,7 @@
   "tags": [
     { "name": "labs", "color": "warning" },
     { "name": "java" },
+    { "name": "spring" },
     { "name": "java driver" }
   ],
   "category": "apps",
