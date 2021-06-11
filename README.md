@@ -1,5 +1,5 @@
 <!--- STARTEXCLUDE --->
-# Getting Started with Apache Cassandra™ and Java using DataStax Astra
+# Getting Started with Apache Cassandra™ and Java using DataStax Astra DB
 *50 minutes, Intermediate, [Start Building](https://github.com/DataStax-Examples/getting-started-with-astra-java#prerequisites)*
 
 This provides an example REST backend built in Java using `Spring Boot` for use with the [Getting Started with Astra UI](https://github.com/DataStax-Examples/getting-started-with-astra-ui).
@@ -10,7 +10,7 @@ This provides an example REST backend built in Java using `Spring Boot` for use 
 
 
 ## Objectives
-* How to connect to Astra via the Secure Connect Bundle
+* How to connect to Astra DB via the Secure Connect Bundle
 * How to manage a Cassandra Session within a JAVA web application
   
 ## How this Works
@@ -68,9 +68,9 @@ Let's do some initial setup by creating a serverless(!) database.
 ### Running on your local machine
 Make sure that you have:
 * Java 11+
-* An Astra compatible Java driver, instructions may be found [here](https://docs.datastax.com/en/astra/aws/doc/dscloud/astra/dscloudConnectJavaDriver.html) to install this locally.
+* An Astra DB compatible Java driver, instructions may be found [here](https://docs.datastax.com/en/astra/aws/doc/dscloud/astra/dscloudConnectJavaDriver.html) to install this locally.
 * An Astra database with the CQL schema located in [schema.cql](src/main/resources/schema.cql) already added.
-* The username, password, keyspace name, and secure connect bundle downloaded from your Astra Database.  For information on how to obtain these credentials please read the documentation found [here](https://docs.datastax.com/en/astra/aws/doc/dscloud/astra/dscloudObtainingCredentials.html).
+* The username, password, keyspace name, and secure connect bundle downloaded from your Astra DB.  For information on how to obtain these credentials please read the documentation found [here](https://docs.datastax.com/en/astra/aws/doc/dscloud/astra/dscloudObtainingCredentials.html).
 
 This application is a Spring Boot web application. This sample can be run from the root directory using:
 ```sh
@@ -97,5 +97,5 @@ To setup the UI to connect to Java backend define a `.env` file in the `getting-
 ```sh
 BASE_ADDRESS=http://localhost:8080/api
 ```
-Once you start that project with a `npm run build` it will point the UI to the backend API which will then be using Astra as a database. When you first connect to the UI, a dialog box will open asking for Astra connection information. 
+Once you start that project with a `npm run build` it will point the UI to the backend API which will then be using Astra DB as a database. When you first connect to the UI, a dialog box will open asking for Astra DB connection information. 
 <!--- ENDEXCLUDE --->
