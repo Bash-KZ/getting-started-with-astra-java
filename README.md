@@ -67,7 +67,7 @@ Let's do some initial setup by creating a serverless(!) database.
 
 ### Running on your local machine
 Make sure that you have:
-* Java 11+
+* Java 11
 * An Astra DB compatible Java driver, instructions may be found [here](https://docs.datastax.com/en/astra/aws/doc/dscloud/astra/dscloudConnectJavaDriver.html) to install this locally.
 * An Astra database with the CQL schema located in [schema.cql](src/main/resources/schema.cql) already added.
 * The username, password, keyspace name, and secure connect bundle downloaded from your Astra DB.  For information on how to obtain these credentials please read the documentation found [here](https://docs.datastax.com/en/astra/aws/doc/dscloud/astra/dscloudObtainingCredentials.html).
